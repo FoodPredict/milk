@@ -110,7 +110,7 @@ def home():
 
         return render_template('result.html', prediction=predicted_shelf_life)
 
-    except Exception as e:
+        except Exception as e:
         return f"An error occurred during prediction: {e}"
 
 # --- Run the Flask application ---
