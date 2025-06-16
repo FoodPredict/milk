@@ -24,7 +24,7 @@ except Exception as e:
 # --- Define the features your model expects ---
 # IMPORTANT: Replace these with the actual column names from your dataset
 # EXCEPT for the target variable ('Shelf_Life_Days')
- 'Storage_Temperature_C',
+    'Storage_Temperature_C',
     'Initial_pH',
     'Final_pH',
     'Titratable_Acidity_g/100mL',
