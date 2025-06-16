@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    <style>
+        /* Basic styling for better appearance */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center; /* Center align content */
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .prediction-value {
+            font-weight: bold;
+            color: #4CAF50; /* Green color for emphasis */
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Milk Shelf Life Prediction Result</h1>
+
+    <p>The predicted shelf life is: <span class="prediction-value">{{ prediction }}</span> days.</p>
+
+    <a href="/">Make another prediction</a>
+
+</body>
+</html>
