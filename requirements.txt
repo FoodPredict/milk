@@ -1,0 +1,8 @@
+tensorflow
+pandas
+scikit-learn
+flask  # if you are using Flask as your web framework
+joblib # or pickle, depending on which library you used to save the scaler
+
+# In your requirements.txt
+    gunicorn # or waitress
