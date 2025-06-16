@@ -38,24 +38,23 @@
     <h1>Predict Milk Shelf Life</h1>
 
     <form action="/predict" method="post">
-        <!-- Input fields for your features go here -->
+    <label for="storage_temp">Storage Temperature (°C):</label>
+    <input type="text" id="storage_temp" name="Storage_Temperature_C" required><br><br>
 
-        <!-- Example input fields - REPLACE THESE WITH YOUR ACTUAL FEATURES -->
-        <label for="temperature">Temperature (°C):</label>
-        <input type="text" id="temperature" name="temperature" required><br>
+    <label for="initial_ph_input">Initial pH:</label>
+    <input type="text" id="initial_ph_input" name="Initial_pH" required><br><br>
 
-        <label for="ph">pH Level:</label>
-        <input type="text" id="ph" name="ph" required><br>
+    <label for="final_ph_input">Final pH:</label>
+    <input type="text" id="final_ph_ph" name="Final_pH" required><br><br>
 
-        <label for="butterfat">Butterfat Percentage:</label>
-        <input type="text" id="butterfat" name="butterfat" required><br>
+    <label for="titratable_acidity_input">Titratable Acidity (g/100mL):</label>
+    <input type="text" id="titratable_acidity_input" name="Titratable_Acidity_g/100mL" required><br><br>
 
-        <!-- Add more input fields for each feature in your model -->
-        <!-- The 'name' attribute MUST match the feature name in your FEATURE_COLUMNS list in app.py -->
+    <label for="microbial_count_input">Microbial Count (CFU/mL):</label>
+    <input type="text" id="microbial_count_input" name="Microbial_Count_CFU/mL" required><br><br>
 
-        <br>
-        <input type="submit" value="Predict Shelf Life">
-    </form>
+    <input type="submit" value="Predict Shelf Life">
+</form>
 
 </body>
 </html>
