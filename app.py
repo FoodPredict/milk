@@ -24,11 +24,11 @@ except Exception as e:
 # --- Define the features your model expects ---
 # IMPORTANT: Replace these with the actual column names from your dataset
 # EXCEPT for the target variable ('Shelf_Life_Days')
-FEATURE_COLUMNS = [
-    'Feature1_Name',
-    'Feature2_Name',
-    'Feature3_Name',
-    # Add all other feature column names from your dataset here
+ 'Storage_Temperature_C',
+    'Initial_pH',
+    'Final_pH',
+    'Titratable_Acidity_g/100mL',
+    'Microbial_Count_CFU/mL'
 ]
 
 # --- Routes ---
