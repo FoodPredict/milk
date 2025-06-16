@@ -36,27 +36,59 @@ def home():
     """Renders the home page with the input form."""
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    """Handles the prediction request from the form."""
-    if model is None or scaler is None:
-        return "Error: Model or scaler not loaded. Please check server logs."
+# ... (rest of your Flask code)
 
-    try:
-        # Get data from the form
-        data = request.form.to_dict()
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        if model is None or scaler is None:
+            print("Error: Model or scaler not loaded in predict route.")
+            return "Error: Model or scaler not loaded. Please check server logs."
 
-        # Create a dictionary with all expected feature columns, initialized to None
-        input_data_dict = {col: None for col in FEATURE_COLUMNS}
+        try:
+            print("--- Starting predict route ---") # Added
+            data = request.form.to_dict()
+            print(f"Received data: {data}")
 
-        # Update the dictionary with the actual submitted data
-        for key, value in data.items():
-            if key in FEATURE_COLUMNS:
-                try:
-                    input_data_dict[key] = float(value)
-                except ValueError:
-                    return f"Error: Invalid input for '{key}'. Please enter a number."
+            input_data_dict = {col: None for col in FEATURE_COLUMNS}
 
+            for key, value in data.items():
+                 if key in FEATURE_COLUMNS:
+                     try:
+                         input_data_dict[key] = float(value)
+                     except ValueError:
+                         print(f"Error: Invalid input for '{key}': {value}")
+                         return f"Error: Invalid input for '{key}'. Please enter a number."
+
+            print("Creating pandas DataFrame...") # Added
+            input_data = pd.DataFrame([input_data_dict])
+            print(f"Input DataFrame created: {input_data}")
+
+            print("Ensuring column order...") # Added
+            input_data = input_data[FEATURE_COLUMNS]
+            print(f"Input DataFrame reordered: {input_data}")
+
+            if input_data.isnull().values.any():
+                 print("Error: Missing values detected in input.")
+                 return "Error: Missing values detected in input. Please provide all feature values."
+
+            print("Scaling input data...") # Added
+            input_data_scaled = scaler.transform(input_data)
+            print(f"Input data scaled. Shape: {input_data_scaled.shape}")
+
+            print("Making prediction...") # Added
+            prediction = model.predict(input_data_scaled)
+            print(f"Raw prediction result: {prediction}")
+
+            predicted_shelf_life = round(prediction[0][0], 2)
+            print(f"Predicted shelf life: {predicted_shelf_life}")
+
+            print("Rendering result template...") # Added
+            return render_template('result.html', prediction=predicted_shelf_life)
+
+        except Exception as e:
+            print(f"An error occurred during prediction: {e}")
+            return f"An error occurred during prediction: {e}"
+       
         # Convert the dictionary to a pandas DataFrame
         input_data = pd.DataFrame([input_data_dict])
 
