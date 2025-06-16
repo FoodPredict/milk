@@ -1,6 +1,6 @@
 tensorflow
 pandas
-scikit-learn
+scikit-learn==1.6.1
 flask  # if you are using Flask as your web framework
 joblib # or pickle, depending on which library you used to save the scaler
 
