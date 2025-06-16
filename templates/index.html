@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Milk Shelf Life Prediction</title>
+    <style>
+        /* Basic styling for better appearance */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Predict Milk Shelf Life</h1>
+
+    <form action="/predict" method="post">
+        <!-- Input fields for your features go here -->
+
+        <!-- Example input fields - REPLACE THESE WITH YOUR ACTUAL FEATURES -->
+        <label for="temperature">Temperature (°C):</label>
+        <input type="text" id="temperature" name="temperature" required><br>
+
+        <label for="ph">pH Level:</label>
+        <input type="text" id="ph" name="ph" required><br>
+
+        <label for="butterfat">Butterfat Percentage:</label>
+        <input type="text" id="butterfat" name="butterfat" required><br>
+
+        <!-- Add more input fields for each feature in your model -->
+        <!-- The 'name' attribute MUST match the feature name in your FEATURE_COLUMNS list in app.py -->
+
+        <br>
+        <input type="submit" value="Predict Shelf Life">
+    </form>
+
+</body>
+</html>
