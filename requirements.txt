@@ -1,3 +1,4 @@
 scikit-learn
     joblib
     Flask # or FastAPI or your chosen web framework
+    gunicorn
