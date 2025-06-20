@@ -1,63 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Milk Shelf Life Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelf Life Prediction</title>
     <style>
-        /* Basic styling for better appearance */
         body {
             font-family: Arial, sans-serif;
+            line-height: 1.6;
             margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
         }
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"] {
-            width: 200px;
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
             padding: 8px;
-            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
         }
-        input[type="submit"] {
-            background-color: #4CAF50;
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #5cb85c;
             color: white;
-            padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
         }
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        button:hover {
+            background: #4cae4c;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #dff0d8;
+            border: 1px solid #d0e9c6;
+            border-radius: 4px;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
 <body>
-    <h1>Predict Milk Shelf Life</h1>
+    <div class="container">
+        <h1>Pasteurized Milk Shelf Life Prediction</h1>
 
-    <form action="/predict" method="post">
-        <!-- Input fields for your features - Ensure 'name' attributes match FEATURE_COLUMNS -->
+        <form id="prediction-form">
+            <!-- Input fields for your features -->
+            <!-- Replace these with your actual feature names and input types -->
+            <div class="form-group">
+                <label for="feature1">Feature 1:</label>
+                <input type="number" id="feature1" name="feature1" required>
+            </div>
 
-        <label for="Storage_Temperature_C">Storage Temperature (°C):</label>
-        <input type="text" id="Storage_Temperature_C" name="Storage_Temperature_C" required><br>
+            <div class="form-group">
+                <label for="feature2">Feature 2:</label>
+                <input type="number" id="feature2" name="feature2" required>
+            </div>
 
-        <label for="Initial_pH">Initial pH:</label>
-        <input type="text" id="Initial_pH" name="Initial_pH" required><br>
+            <div class="form-group">
+                <label for="feature3">Feature 3:</label>
+                <input type="number" id="feature3" name="feature3" required>
+            </div>
 
-        <label for="Final_pH">Final pH:</label>
-        <input type="text" id="Final_pH" name="Final_pH" required><br>
+            <!-- Add more input fields for your features -->
 
-        <label for="Titratable_Acidity_g/100mL">Titratable Acidity (g/100mL):</label>
-        <input type="text" id="Titratable_Acidity_g/100mL" name="Titratable_Acidity_g/100mL" required><br>
+            <button type="submit">Get Prediction</button>
+        </form>
 
-        <label for="Microbial_Count_CFU/mL">Microbial Count (CFU/mL):</label>
-        <input type="text" id="Microbial_Count_CFU/mL" name="Microbial_Count_CFU/mL" required><br>
+        <div id="prediction-result">
+            <p>Predicted Shelf Life: <span id="predicted-value"></span> days</p>
+        </div>
+    </div>
 
-        <br>
-        <input type="submit" value="Predict Shelf Life">
-    </form>
+    <script>
+        const form = document.getElementById('prediction-form');
+        const predictionResult = document.getElementById('prediction-result');
+        const predictedValueSpan = document.getElementById('predicted-value');
 
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get input values from the form
+            const feature1 = document.getElementById('feature1').value;
+            const feature2 = document.getElementById('feature2').value;
+            const feature3 = document.getElementById('feature3').value;
+            // Get values for all your features
+
+            // Create a data object to send to the backend
+            const inputData = {
+                'feature1': parseFloat(feature1), // Convert to appropriate data type (e.g., float)
+                'feature2': parseFloat(feature2),
+                'feature3': parseFloat(feature3)
+                // Add all your features here
+            };
+
+            try {
+                // Send the input data to your backend (where your Flask/FastAPI app is running)
+                const response = await fetch('/predict', { // Assuming your prediction endpoint is at '/predict'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(inputData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Display the prediction result
+                predictedValueSpan.textContent = data.prediction.toFixed(2); // Format to 2 decimal places
+                predictionResult.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error fetching prediction:', error);
+                // You might want to display an error message to the user
+                predictionResult.style.display = 'block';
+                predictedValueSpan.textContent = 'Error getting prediction.';
+                predictionResult.style.backgroundColor = '#f2dede';
+                predictionResult.style.borderColor = '#ebccd1';
+            }
+        });
+    </script>
 </body>
 </html>
