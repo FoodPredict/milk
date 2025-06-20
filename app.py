@@ -1,15 +1,20 @@
+from flask import Flask, request, jsonify, render_template
 import joblib
 import pandas as pd
 import sys
+import os
 
-# Load the saved model
+# Assuming your prediction script is in the same directory
+# If not, adjust the import path
 try:
+    # Load the saved model
     model = joblib.load('shelf_life_model.pkl')
     print("Model loaded successfully.")
 except FileNotFoundError:
     print("Error: shelf_life_model.pkl not found.")
-    sys.exit(1)
+    sys.exit(1) # Exit if the model file is not found
 
+# --- Function to predict shelf life (adapted from your script) ---
 def predict_shelf_life(input_data):
     """
     Predicts shelf life based on input data.
@@ -21,17 +26,11 @@ def predict_shelf_life(input_data):
     Returns:
         float: The predicted shelf life.
     """
-    # Convert input data to a pandas DataFrame
-    # Ensure the order of columns matches the training data
-    # (You'll need to adjust this based on your actual feature names)
     try:
         input_df = pd.DataFrame([input_data])
-        # Make sure column order matches the features used for training
-        # Get feature names from the training data (assuming you have X_train available)
-        # If not, you'll need to store your feature names separately
-        # For simplicity, assuming a fixed order based on the original features list
-        # YOU WILL NEED TO VERIFY AND ADJUST THIS PART based on your features
-        feature_names = ['feature1', 'feature2', 'feature3'] # Replace with your actual feature names
+        # !!! IMPORTANT: Replace these with your actual feature names
+        # Ensure the order matches the training data
+        feature_names = ['feature1', 'feature2', 'feature3'] # <== ADJUST THIS
         input_df = input_df[feature_names]
 
         prediction = model.predict(input_df)[0]
@@ -43,11 +42,30 @@ def predict_shelf_life(input_data):
         print(f"An error occurred during prediction: {e}")
         return None
 
-# Example usage (for testing the script directly)
-if __name__ == "__main__":
-    # Replace with sample input data based on your features
-    sample_input = {'feature1': 10, 'feature2': 25, 'feature3': 1.5}
-    predicted_value = predict_shelf_life(sample_input)
+# --- Flask Web Application ---
+app = Flask(__name__)
 
-    if predicted_value is not None:
-        print(f"Predicted shelf life: {predicted_value:.2f}")
+# Route to serve the index.html file
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# Route to handle prediction requests
+@app.route('/predict', methods=['POST'])
+def predict():
+    if request.method == 'POST':
+        data = request.get_json() # Get JSON data from the request
+
+        # Call the predict_shelf_life function with the received data
+        prediction = predict_shelf_life(data)
+
+        if prediction is not None:
+            return jsonify({'prediction': prediction})
+        else:
+            return jsonify({'error': 'Could not process prediction'}), 400 # Bad Request
+
+# This block is for running the Flask app locally (optional for Render)
+if __name__ == '__main__':
+    # Render will set the PORT environment variable
+    port = int(os.environ.get('PORT', 5000)) # Default to 5000 if PORT is not set
+    app.run(host='0.0.0.0', port=port)
