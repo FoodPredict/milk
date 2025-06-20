@@ -1,5 +1,5 @@
-scikit-learn
+pandas
+    scikit-learn == 1.6.1
     joblib
-    Flask # or FastAPI or your chosen web framework
-    gunicorn
-    pandas
+    Flask
+    gunicorn # Add gunicorn for Render deployment
