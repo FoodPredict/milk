@@ -8,9 +8,9 @@ import os
 # YOU MUST REPLACE THE PLACEHOLDER VALUES BELOW with the actual mean values
 # from your training data for Titratable Acidity and Microbial Count.
 # Calculate these means after loading and cleaning your dataset.
-DEFAULT_INITIAL_PH = 6.5
+DEFAULT_INITIAL_PH = 5.5
 DEFAULT_TITRATABLE_ACIDITY = 0.15  # <== REPLACE WITH ACTUAL MEAN FROM YOUR DATA
-DEFAULT_MICROBIAL_COUNT = 1000.0  # <== REPLACE WITH ACTUAL MEAN FROM YOUR DATA
+DEFAULT_MICROBIAL_COUNT = 10000.0  # <== REPLACE WITH ACTUAL MEAN FROM YOUR DATA
 
 # Load the saved models
 try:
@@ -47,7 +47,7 @@ def predict():
         # Apply default values based on dropdown selections
         storage_temp = 5.0 if data.get('storage_temp_option') == 'refrigerated' else \
                        25.0 if data.get('storage_temp_option') == 'room_temp' else \
-                       float(data.get('storage_temp_specify', 5.0)) # Default to 5 if specify is chosen but no value provided
+                       float(data.get('storage_temp_specify', 30.0)) # Default to 30 if specify is chosen but no value provided
 
 
         initial_ph = DEFAULT_INITIAL_PH if data.get('initial_ph_option') == 'dont_know' else \
