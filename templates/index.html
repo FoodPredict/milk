@@ -72,236 +72,149 @@
         .input-specify {
             margin-top: 10px;
         }
-        #prediction-results {
+        .results {
             margin-top: 30px;
             padding: 20px;
-            background: #e9ecef;
-            border: 1px solid #dee2e6;
+            background-color: #e9ecef;
             border-radius: 5px;
+            text-align: center;
             display: none; /* Hidden by default */
         }
-        #prediction-results p {
-            margin: 8px 0;
-            font-size: 1.1em;
+        .results h2 {
+            margin-top: 0;
             color: #333;
         }
-        #prediction-results strong {
+        .results p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .results strong {
             color: #0056b3;
         }
         .error-message {
-            color: #dc3545;
-            font-weight: bold;
-            margin-top: 10px;
-            padding: 15px;
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            display: none;
+            color: red;
+            margin-top: 15px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Pasteurized Milk Shelf Life Prediction</h1>
+        <h1>Predict Product Shelf Life</h1>
 
-        <form id="prediction-form">
-            <!-- Storage Temperature -->
-            <div class="form-group">
-                <label for="storage_temp_option">Storage Temperature (°C) <span style="color: red;">*</span>:</label>
-                <select id="storage_temp_option" name="storage_temp_option" required>
-                    <option value="">-- Select Option --</option>
-                    <option value="refrigerated">Refrigerated (approx. 5°C)</option>
-                    <option value="room_temp">Room Temp (approx. 25°C)</option>
-                    <option value="specify">Specify temperature</option>
-                </select>
-                <div id="storage_temp_specify_container" class="input-specify" style="display: none;">
-                    <label for="storage_temp_specify">Specify Temperature (°C):</label>
-                    <input type="number" id="storage_temp_specify" name="storage_temp_specify" step="0.1">
-                </div>
+        <div class="form-group">
+            <label for="storage_temp_option">Storage Temperature:</label>
+            <select id="storage_temp_option" name="storage_temp_option">
+                <option value="refrigerated">Refrigerated (approx 5°C)</option>
+                <option value="room_temp">Room Temperature (approx 25°C)</option>
+            </select>
+            <div class="input-specify">
+                 <label for="Storage_Temperature_C"><span class="optional-label">(Optional) Specify Exact Temperature (°C):</span></label>
+                 <input type="number" id="Storage_Temperature_C" name="Storage_Temperature_C" step="0.1">
             </div>
-
-            <!-- Initial pH -->
-            <div class="form-group">
-                <label for="initial_ph_option">Initial pH:</label>
-                <select id="initial_ph_option" name="initial_ph_option">
-                    <option value="dont_know">Don't Know (assume 5.5)</option>
-                    <option value="specify">Specify pH</option>
-                </select>
-                <div id="initial_ph_specify_container" class="input-specify" style="display: none;">
-                    <label for="initial_ph_specify">Specify pH:</label>
-                    <input type="number" id="initial_ph_specify" name="initial_ph_specify" step="0.01">
-                </div>
-            </div>
-
-            <!-- Titratable Acidity -->
-            <div class="form-group">
-                <label for="titratable_acidity_option">Titratable Acidity (g/100mL):</label>
-                <select id="titratable_acidity_option" name="titratable_acidity_option">
-                    <option value="dont_know">Don't Know (assume 0.15)</option>
-                    <option value="specify">Specify Acidity</option>
-                </select>
-                <div id="titratable_acidity_specify_container" class="input-specify" style="display: none;">
-                    <label for="titratable_acidity_specify">Specify Acidity (g/100mL):</label>
-                    <input type="number" id="titratable_acidity_specify" name="titratable_acidity_specify" step="0.001">
-                </div>
-            </div>
-
-            <!-- Microbial Count -->
-            <div class="form-group">
-                <label for="microbial_count_option">Microbial Count (CFU/mL):</label>
-                <select id="microbial_count_option" name="microbial_count_option">
-                    <option value="dont_know">Don't Know (assume 10000)</option>
-                    <option value="specify">Specify CFU/mL</option>
-                </select>
-                <div id="microbial_count_specify_container" class="input-specify" style="display: none;">
-                    <label for="microbial_count_specify">Specify CFU/mL:</label>
-                    <input type="number" id="microbial_count_specify" name="microbial_count_specify" step="1">
-                </div>
-            </div>
-
-            <button type="submit">Get Prediction</button>
-        </form>
-
-        <div id="prediction-results">
-            <p>Predicted Final pH: <span id="predicted-final-ph"></span></p>
-            <p>Predicted Shelf Life: <span id="predicted-shelf-life"></span> days</p>
         </div>
 
-        <div id="error-message" class="error-message">
-            An error occurred while getting the prediction. Please try again.
+        <div class="form-group">
+            <label for="Initial_pH">Initial pH:</label>
+            <input type="number" id="Initial_pH" name="Initial_pH" step="0.01" required>
         </div>
+
+         <div class="form-group">
+            <label for="Titratable_Acidity_g/100mL">Titratable Acidity (g/100mL):</label>
+            <input type="number" id="Titratable_Acidity_g/100mL" name="Titratable_Acidity_g/100mL" step="0.001" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Microbial_Count_CFU/mL">Microbial Count (CFU/mL):</label>
+            <input type="number" id="Microbial_Count_CFU/mL" name="Microbial_Count_CFU/mL" step="1" required>
+        </div>
+
+        <!-- Add Packaging Input -->
+        <div class="form-group">
+            <label for="Packaging">Packaging Type:</label>
+            <select id="Packaging" name="Packaging" required>
+                <option value="">--Select Packaging Type--</option>
+                <!-- Add your actual packaging types as options -->
+                <option value="Glass">Glass</option>
+                <option value="Plastic">Plastic</option>
+                <option value="Carton">Carton</option>
+                <!-- Add other types from your data -->
+            </select>
+        </div>
+
+
+        <button onclick="predictShelfLife()">Predict</button>
+
+        <div class="results" id="results">
+            <h2>Prediction Results</h2>
+            <p>Predicted Final pH: <strong id="predicted_final_ph"></strong></p>
+            <p>Predicted Shelf Life: <strong id="predicted_shelf_life"></strong> days</p>
+        </div>
+
+        <div class="error-message" id="error-message"></div>
     </div>
 
     <script>
-        const form = document.getElementById('prediction-form');
-        const predictionResults = document.getElementById('prediction-results');
-        const predictedFinalPhSpan = document.getElementById('predicted-final-ph');
-        const predictedShelfLifeSpan = document.getElementById('predicted-shelf-life');
-        const errorMessageDiv = document.getElementById('error-message');
+        async function predictShelfLife() {
+            const storageTempOption = document.getElementById('storage_temp_option').value;
+            const specifiedStorageTemp = document.getElementById('Storage_Temperature_C').value;
+            const initialPh = document.getElementById('Initial_pH').value;
+            const titratableAcidity = document.getElementById('Titratable_Acidity_g/100mL').value;
+            const microbialCount = document.getElementById('Microbial_Count_CFU/mL').value;
+            const packaging = document.getElementById('Packaging').value; // Get packaging value
 
-        // Get references to select and specify input containers
-        const storageTempOption = document.getElementById('storage_temp_option');
-        const storageTempSpecifyContainer = document.getElementById('storage_temp_specify_container');
-        const storageTempSpecifyInput = document.getElementById('storage_temp_specify'); // Get the input element
-        const initialPhOption = document.getElementById('initial_ph_option');
-        const initialPhSpecifyContainer = document.getElementById('initial_ph_specify_container');
-         const initialPhSpecifyInput = document.getElementById('initial_ph_specify'); // Get the input element
-        const titratableAcidityOption = document.getElementById('titratable_acidity_option');
-        const titratableAciditySpecifyContainer = document.getElementById('titratable_acidity_specify_container');
-         const titratableAciditySpecifyInput = document.getElementById('titratable_acidity_specify'); // Get the input element
-        const microbialCountOption = document.getElementById('microbial_count_option');
-        const microbialCountSpecifyContainer = document.getElementById('microbial_count_specify_container');
-         const microbialCountSpecifyInput = document.getElementById('microbial_count_specify'); // Get the input element
+            // Use specified temp if provided, otherwise use option default
+            const finalStorageTemp = specifiedStorageTemp ? parseFloat(specifiedStorageTemp) :
+                                       (storageTempOption === 'refrigerated' ? 5.0 : 25.0);
 
-
-        // Function to toggle display of specify input field and manage 'required' attribute
-        function toggleSpecifyInput(optionSelect, specifyContainer, specifyInput) {
-            if (optionSelect.value === 'specify') {
-                specifyContainer.style.display = 'block';
-                specifyInput.required = true; // Make specify input required
-            } else {
-                specifyContainer.style.display = 'none';
-                specifyInput.required = false; // Make specify input not required
-                 specifyInput.value = ''; // Clear the value when hiding
+            // Basic validation
+            if (!initialPh || !titratableAcidity || !microbialCount || !packaging) {
+                document.getElementById('error-message').innerText = 'Please fill in all required fields (Initial pH, Titratable Acidity, Microbial Count, Packaging).';
+                document.getElementById('results').style.display = 'none'; // Hide results
+                return;
             }
-        }
-
-        // Add event listeners to dropdowns to toggle specify input
-        storageTempOption.addEventListener('change', () => toggleSpecifyInput(storageTempOption, storageTempSpecifyContainer, storageTempSpecifyInput));
-        initialPhOption.addEventListener('change', () => toggleSpecifyInput(initialPhOption, initialPhSpecifyContainer, initialPhSpecifyInput));
-        titratableAcidityOption.addEventListener('change', () => toggleSpecifyInput(titratableAcidityOption, titratableAciditySpecifyContainer, titratableAciditySpecifyInput));
-        microbialCountOption.addEventListener('change', () => toggleSpecifyInput(microbialCountOption, microbialCountSpecifyContainer, microbialCountSpecifyInput));
+             document.getElementById('error-message').innerText = ''; // Clear previous errors
 
 
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
-
-            // Hide previous results and error message
-            predictionResults.style.display = 'none';
-            errorMessageDiv.style.display = 'none';
-
-            // Get input values from the form
-            const storageTempOptionValue = storageTempOption.value;
-            const storageTempSpecifyValue = storageTempSpecifyInput.value;
-            const initialPhOptionValue = initialPhOption.value;
-            const initialPhSpecifyValue = initialPhSpecifyInput.value;
-            const titratableAcidityOptionValue = titratableAcidityOption.value;
-            const titratableAciditySpecifyValue = titratableAciditySpecifyInput.value;
-            const microbialCountOptionValue = microbialCountOption.value;
-            const microbialCountSpecifyValue = microbialCountSpecifyInput.value;
-
-            // Basic validation for mandatory 'specify' fields if selected
-            if (storageTempOptionValue === 'specify' && storageTempSpecifyValue === '') {
-                 errorMessageDiv.textContent = 'Please specify the temperature for Storage Temperature.';
-                 errorMessageDiv.style.display = 'block';
-                 return;
-            }
-             if (initialPhOptionValue === 'specify' && initialPhSpecifyValue === '') {
-                 errorMessageDiv.textContent = 'Please specify the pH for Initial pH.';
-                 errorMessageDiv.style.display = 'block';
-                 return;
-            }
-
-             if (titratableAcidityOptionValue === 'specify' && titratableAciditySpecifyValue === '') {
-                 errorMessageDiv.textContent = 'Please specify the Acidity for Titratable Acidity.';
-                 errorMessageDiv.style.display = 'block';
-                 return;
-            }
-
-            if (microbialCountOptionValue === 'specify' && microbialCountSpecifyValue === '') {
-                 errorMessageDiv.textContent = 'Please specify the CFU/mL for Microbial Count.';
-                 errorMessageDiv.style.display = 'block';
-                 return;
-            }
-
-
-            // Create a data object to send to the backend
-            const inputData = {
-                'storage_temp_option': storageTempOptionValue,
-                'storage_temp_specify': storageTempSpecifyValue,
-                'initial_ph_option': initialPhOptionValue,
-                'initial_ph_specify': initialPhSpecifyValue,
-                'titratable_acidity_option': titratableAcidityOptionValue,
-                'titratable_acidity_specify': titratableAciditySpecifyValue,
-                'microbial_count_option': microbialCountOptionValue,
-                'microbial_count_specify': microbialCountSpecifyValue
+            const data = {
+                'Storage_Temperature_C': finalStorageTemp,
+                'Initial_pH': parseFloat(initialPh),
+                'Titratable_Acidity_g/100mL': parseFloat(titratableAcidity),
+                'Microbial_Count_CFU/mL': parseFloat(microbialCount),
+                'Packaging': packaging // Include packaging in the data sent
             };
 
+            console.log("Sending data:", data); // Debugging
+
             try {
-                // Send the input data to your backend
                 const response = await fetch('/predict', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(inputData)
+                    body: JSON.stringify(data)
                 });
 
-                const data = await response.json();
+                const result = await response.json();
+                console.log("Received result:", result); // Debugging
 
-                if (!response.ok) {
-                     // Use the error message from the backend if available
-                    errorMessageDiv.textContent = data.error || `HTTP error! status: ${response.status}`;
-                    errorMessageDiv.style.display = 'block';
-                     // Throw to be caught by the catch block
-                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
-
+                if (response.ok) {
+                    document.getElementById('predicted_final_ph').innerText = result.predicted_final_ph.toFixed(2);
+                    document.getElementById('predicted_shelf_life').innerText = result.predicted_shelf_life.toFixed(0); // Shelf life probably integer
+                    document.getElementById('results').style.display = 'block'; // Show results
+                    document.getElementById('error-message').innerText = ''; // Clear any previous errors
+                } else {
+                    // Handle errors from the backend
+                    document.getElementById('results').style.display = 'none'; // Hide results
+                    document.getElementById('error-message').innerText = result.error || 'An unknown error occurred during prediction.';
                 }
 
-                // Display the prediction results
-                predictedFinalPhSpan.textContent = data.predicted_final_ph.toFixed(2);
-                predictedShelfLifeSpan.textContent = data.predicted_shelf_life.toFixed(2);
-                predictionResults.style.display = 'block';
-
             } catch (error) {
-                console.error('Error fetching prediction:', error);
-                // Display the error message (either from backend or generic)
-                 if (!errorMessageDiv.textContent || errorMessageDiv.style.display === 'none') {
-                     errorMessageDiv.textContent = error.message || 'An error occurred during prediction. Please try again.';
-                     errorMessageDiv.style.display = 'block';
-                 }
+                console.error('Error:', error);
+                document.getElementById('results').style.display = 'none'; // Hide results
+                document.getElementById('error-message').innerText = 'Failed to connect to the prediction service. Please try again later.';
             }
-        });
+        }
     </script>
 </body>
 </html>
